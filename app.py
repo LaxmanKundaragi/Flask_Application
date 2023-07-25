@@ -13,7 +13,7 @@ def db_conn():
 def index():    
     conn=db_conn()
     cur=conn.cursor()
-    cur.execute('''select * from courses order by id''')    
+    cur.execute('''select * from Todo order by id''')    
     data=cur.fetchall()
     cur.close()
     conn.close()
@@ -23,10 +23,10 @@ def index():
 def create():
     conn=db_conn()
     cur=conn.cursor()
-    name=request.form['name']
-    fees=request.form['fees']
-    duration=request.form['duration']
-    cur.execute('''insert into courses (name,fees,duration) values(%s,%s,%s)''',(name,fees,duration))
+    Task=request.form['Task']
+    no_of_days=request.form['no_of_days']
+    status=request.form['status']
+    cur.execute('''insert into todo (Task,no_of_days,status) values(%s,%s,%s)''',(Task,no_of_days,status))
     conn.commit()
     cur.close()
     conn.close()
@@ -36,11 +36,11 @@ def create():
 def update():
     conn=db_conn()
     cur=conn.cursor()
-    name=request.form['name']   
-    fees=request.form['fees']
-    duration=request.form['duration']
+    Task=request.form['Task']   
+    no_of_days=request.form['no_of_days']
+    status=request.form['status']
     id=request.form['id']
-    cur.execute('''update courses set name=%s,fees=%s,duration=%s where id=%s''',(name,fees,duration,id))
+    cur.execute('''update todo set Task=%s,no_of_days=%s,status=%s where id=%s''',(Task,no_of_days,status,id))
     conn.commit()
     return redirect(url_for('index'))
 
@@ -51,7 +51,7 @@ def delete():
     conn=db_conn()
     cur=conn.cursor()
     id=request.form['id']
-    cur.execute('''delete from courses where id=%s''',(id))
+    cur.execute('''delete from todo where id=%s''',(id))
     conn.commit()   
     return redirect(url_for('index'))
 
